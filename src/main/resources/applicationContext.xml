@@ -15,8 +15,8 @@
     <!-- 配置读取外部配置文件 -->
     <context:property-placeholder location="classpath:jdbc.properties"/>
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-          destroy-method="close" p:driverClassName="${jdbc.driverClassName}"
-          p:url="${jdbc.url}" p:username="${jdbc.username}" p:password="${jdbc.password}"/>
+          destroy-method="close" p:driverClassName="${driver}"
+          p:url="${url}" p:username="${username}" p:password="${password}"/>
     <context:annotation-config/> <!-- 此行语句使得resource autowired 等四个注解可以使用 -->
 
     <!-- 实例化jdbcTemplate,同时注入数据源 -->

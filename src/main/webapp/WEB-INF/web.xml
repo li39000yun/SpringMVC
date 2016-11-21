@@ -6,14 +6,23 @@
 
     <display-name>SpringMVC demo</display-name>
     <!-- 配置web.xml，使其具有springmvc特性，主要配置两处，一个是ContextLoaderListener，一个是DispatcherServlet -->
+    <!--<context-param>-->
+        <!--<param-name>contextConfigLocation</param-name>-->
+        <!--<param-value>classpath*:applicationContext.xml</param-value>-->
+    <!--</context-param>-->
+    <!-- Spring和mybatis的配置文件 -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath*:applicationContext.xml</param-value>
+        <param-value>classpath:spring-mybatis.xml</param-value>
     </context-param>
     <!-- 配置ContextLoaderListener表示，该工程要以spring的方式启动。启动时会默认在/WEB-INF目录下查找applicationContext.xml
 作为spring容器的配置文件，该文件里可以初始化一些bean -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <!-- 防止Spring内存溢出监听器 -->
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
     </listener>
 
     <!-- 字符集过滤器 -->
