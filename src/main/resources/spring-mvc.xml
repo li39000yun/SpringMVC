@@ -15,6 +15,13 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
     </context:component-scan>
 
+    <!--
+    <servlet-mapping>的<url-pattern>/</url-pattern>把所有的请求都交给spring去处理了，
+    而所有available的请求url都是在Constroller里使用类似@RequestMapping(value = "/login/{user}",
+     method = RequestMethod.GET)这样的注解配置的，这样的话对js/css/jpg/gif等静态资源的访问就会得不到。
+     -->
+    <!--<mvc:default-servlet-handler/>-->
+
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
         <!-- 注册JASON转换器 -->
         <property name="messageConverters">
@@ -52,6 +59,10 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 
     <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"></bean>
 
+    <!-- upload settings -->
+    <bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="102400000"></property>
+    </bean>
 
     <!-- 当配置了<mvc:annotation-driven/>后，会自动加载org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping和
 org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter，所以如果显示的配置则需去掉配置<mvc:annotation-driven/> -->

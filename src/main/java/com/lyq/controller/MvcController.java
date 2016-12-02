@@ -2,11 +2,20 @@ package com.lyq.controller;
 
 import com.lyq.model.Person;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -64,4 +73,31 @@ public class MvcController {
         return "show";
     }
 
+    // 八、使用Ajax调用
+    //pass the parameters to front-end using ajax
+    @RequestMapping("/getPerson")
+    public void getPerson(String name, PrintWriter printWriter) {
+        printWriter.write("hello," + name);
+    }
+
+    // 九、在Controller中使用redirect方式处理请求
+    @RequestMapping("/redirect")
+    public String redirect() {
+        return "redirect:hello";
+    }
+
+    // 十、文件上传,限制POST方式
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public String upload(HttpServletRequest httpServletRequest) throws IOException {
+        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
+        MultipartFile file = multipartHttpServletRequest.getFile("file");
+        String fileName = file.getOriginalFilename();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        FileOutputStream fileOutputStream = new FileOutputStream(httpServletRequest.getSession().getServletContext().getRealPath("/")
+                + "/upload/" + simpleDateFormat.format(new Date()) + fileName.substring(fileName.lastIndexOf(".")));
+        fileOutputStream.write(file.getBytes());
+        fileOutputStream.flush();
+        fileOutputStream.close();
+        return "hello";
+    }
 }
