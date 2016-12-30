@@ -32,7 +32,8 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
         </property>
     </bean>
 
-    <bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+    <bean id="mappingJacksonHttpMessageConverter"
+          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
         <property name="supportedMediaTypes">
             <list>
                 <value>text/plain;charset=UTF-8</value>
@@ -60,11 +61,28 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
     <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"></bean>
 
     <!-- upload settings -->
-    <bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="maxUploadSize" value="102400000"></property>
     </bean>
 
     <!-- 当配置了<mvc:annotation-driven/>后，会自动加载org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping和
 org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter，所以如果显示的配置则需去掉配置<mvc:annotation-driven/> -->
     <!--<mvc:annotation-driven/>-->
+
+    <!-- 配置自定义拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/mvc/**"/>
+            <bean class="com.lyq.interceptor.MyInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <!-- configure the locale resource -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="locale"></property>
+    </bean>
+
+    <!-- make the jsp page can be visited -->
+    <!-- 配置后，其余请求不生效 -->
+    <!--<mvc:view-controller path="/locale" view-name="locale"/>-->
 </beans>

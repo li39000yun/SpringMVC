@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by lyq on 2016/11/21.
@@ -30,10 +31,41 @@ public class TestMyBatis {
 
     @Test
     public void test1() {
-        User user = userService.getUserById(1);
+        User user = userService.getUserById(3);
         // System.out.println(user.getUserName());
         // logger.info("值："+user.getUserName());
         logger.info(JSON.toJSONString(user));
         System.out.println(user);
     }
+
+    @Test
+    public void test2() {
+        User user = new User();
+        user.setName("中文测试");
+        System.out.println(userService.addUser(user));
+    }
+
+    @Test
+    public void testUpdateUser() {
+        User user = new User(2, "旺财");
+        userService.updateUser(user);
+        System.out.println(userService.getUserById(2));
+    }
+
+    @Test
+    public void testDeleteUser() {
+        userService.deleteUser(2);
+    }
+
+    @Test
+    public void testSelectAll() {
+        System.out.println();
+        List<User> list = userService.selectAllUser();
+        System.out.println("---------------");
+        for (User user : list) {
+            System.out.println(user.toString());
+        }
+
+    }
+
 }
